@@ -1,0 +1,595 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-01-27",
+  "description": "BestCo Financial Statement Style Guide Rules - Based on Technical Work Sample Assignment 3",
+  "document_type": "financial_statements",
+  "organization": "BestCo Ltd.",
+  
+  "rules": [
+    {
+      "rule_id": "COVER_PAGE_COMPANY_NAME",
+      "category": "cover_page",
+      "selector": "cover_page_line_19",
+      "priority": 1,
+      "description": "Company name line formatting: 'COMPANY_NAME (formerly Former_Name)'",
+      "location": {
+        "page": 1,
+        "row_from_top": 19,
+        "element_type": "paragraph"
+      },
+      "validation": {
+        "font_name": "Arial",
+        "font_size": 14,
+        "bold": true,
+        "alignment": "center",
+        "text_format_rules": {
+          "company_name_current": "UPPERCASE",
+          "word_formerly": "lowercase",
+          "company_name_former": "Capitalize Each Word"
+        }
+      },
+      "correction_action": {
+        "type": "apply_cover_page_company_formatting",
+        "properties": {
+          "font_name": "Arial",
+          "font_size": 14,
+          "bold": true,
+          "alignment": "center"
+        }
+      },
+      "severity": "high",
+      "enabled": true,
+      "notes": "Example: 'BESTCO LTD. (formerly GoodCo Ltd.)' where BESTCO LTD. is CAPS, formerly is lowercase, GoodCo Ltd. has each word capitalized"
+    },
+    
+    {
+      "rule_id": "COVER_PAGE_BLANK_ROW_AFTER_COMPANY",
+      "category": "cover_page",
+      "selector": "cover_page_line_20",
+      "priority": 2,
+      "description": "One blank row after company name (row 20)",
+      "location": {
+        "page": 1,
+        "row_from_top": 20,
+        "element_type": "paragraph"
+      },
+      "validation": {
+        "font_name": "Arial",
+        "font_size": 9,
+        "is_blank": true
+      },
+      "correction_action": {
+        "type": "ensure_blank_row",
+        "properties": {
+          "font_name": "Arial",
+          "font_size": 9
+        }
+      },
+      "severity": "medium",
+      "enabled": true
+    },
+    
+    {
+      "rule_id": "COVER_PAGE_FINANCIAL_STATEMENTS_TITLE",
+      "category": "cover_page",
+      "selector": "cover_page_line_21",
+      "priority": 3,
+      "description": "Financial statements title: bold, Capitalize Each Word",
+      "location": {
+        "page": 1,
+        "row_from_top": 21,
+        "element_type": "paragraph"
+      },
+      "validation": {
+        "font_name": "Arial",
+        "font_size": 9,
+        "bold": true,
+        "alignment": "center",
+        "text_format": "Capitalize Each Word"
+      },
+      "correction_action": {
+        "type": "apply_formatting",
+        "properties": {
+          "font_name": "Arial",
+          "font_size": 9,
+          "bold": true,
+          "alignment": "center",
+          "text_transform": "title_case"
+        }
+      },
+      "severity": "high",
+      "enabled": true,
+      "notes": "Example: 'Condensed Interim Consolidated Financial Statements' or 'Consolidated Financial Statements'"
+    },
+    
+    {
+      "rule_id": "COVER_PAGE_BLANK_ROW_AFTER_TITLE",
+      "category": "cover_page",
+      "selector": "cover_page_line_22",
+      "priority": 4,
+      "description": "One blank row after financial statements title (row 22)",
+      "location": {
+        "page": 1,
+        "row_from_top": 22,
+        "element_type": "paragraph"
+      },
+      "validation": {
+        "font_name": "Arial",
+        "font_size": 9,
+        "is_blank": true
+      },
+      "correction_action": {
+        "type": "ensure_blank_row",
+        "properties": {
+          "font_name": "Arial",
+          "font_size": 9
+        }
+      },
+      "severity": "medium",
+      "enabled": true
+    },
+    
+    {
+      "rule_id": "COVER_PAGE_PERIOD_REFERENCE",
+      "category": "cover_page",
+      "selector": "cover_page_line_23",
+      "priority": 5,
+      "description": "Period reference: bold, Sentence case, center-aligned",
+      "location": {
+        "page": 1,
+        "row_from_top": 23,
+        "element_type": "paragraph"
+      },
+      "validation": {
+        "font_name": "Arial",
+        "font_size": 9,
+        "bold": true,
+        "alignment": "center",
+        "text_format": "Sentence case"
+      },
+      "correction_action": {
+        "type": "apply_formatting",
+        "properties": {
+          "font_name": "Arial",
+          "font_size": 9,
+          "bold": true,
+          "alignment": "center",
+          "text_transform": "sentence_case"
+        }
+      },
+      "severity": "high",
+      "enabled": true,
+      "notes": "Example: 'For the years ended December 31, 2023 and 2022' - First word capitalized, rest lowercase except proper nouns"
+    },
+    
+    {
+      "rule_id": "COVER_PAGE_BLANK_ROW_AFTER_PERIOD",
+      "category": "cover_page",
+      "selector": "cover_page_line_24",
+      "priority": 6,
+      "description": "One blank row after period reference (row 24)",
+      "location": {
+        "page": 1,
+        "row_from_top": 24,
+        "element_type": "paragraph"
+      },
+      "validation": {
+        "font_name": "Arial",
+        "font_size": 9,
+        "is_blank": true
+      },
+      "correction_action": {
+        "type": "ensure_blank_row",
+        "properties": {
+          "font_name": "Arial",
+          "font_size": 9
+        }
+      },
+      "severity": "medium",
+      "enabled": true
+    },
+    
+    {
+      "rule_id": "COVER_PAGE_EXPRESSION_LINE",
+      "category": "cover_page",
+      "selector": "cover_page_line_25",
+      "priority": 7,
+      "description": "Expression line: Sentence case, NOT bold, center-aligned",
+      "location": {
+        "page": 1,
+        "row_from_top": 25,
+        "element_type": "paragraph"
+      },
+      "validation": {
+        "font_name": "Arial",
+        "font_size": 9,
+        "bold": false,
+        "alignment": "center",
+        "text_format": "Sentence case"
+      },
+      "correction_action": {
+        "type": "apply_formatting",
+        "properties": {
+          "font_name": "Arial",
+          "font_size": 9,
+          "bold": false,
+          "alignment": "center",
+          "text_transform": "sentence_case"
+        }
+      },
+      "severity": "high",
+      "enabled": true,
+      "notes": "Example: '(Unaudited - Expressed in Canadian dollars)' or '(Expressed in thousands of US dollars)'"
+    },
+    
+    {
+      "rule_id": "COVER_PAGE_DEFAULT_FONT",
+      "category": "cover_page",
+      "selector": "cover_page_all_elements",
+      "priority": 8,
+      "description": "All cover page fonts default to Arial 9 unless otherwise specified",
+      "location": {
+        "page": 1,
+        "row_from_top": "1-30",
+        "element_type": "paragraph"
+      },
+      "validation": {
+        "font_name": "Arial",
+        "font_size": 9
+      },
+      "correction_action": {
+        "type": "apply_default_font",
+        "properties": {
+          "font_name": "Arial",
+          "font_size": 9
+        }
+      },
+      "severity": "medium",
+      "enabled": true,
+      "exceptions": [
+        "Company name line (Arial 14)"
+      ]
+    },
+    
+    {
+      "rule_id": "COVER_PAGE_CENTER_ALIGNMENT",
+      "category": "cover_page",
+      "selector": "cover_page_all_text",
+      "priority": 9,
+      "description": "All cover page text must be center-aligned",
+      "location": {
+        "page": 1,
+        "element_type": "paragraph"
+      },
+      "validation": {
+        "alignment": "center"
+      },
+      "correction_action": {
+        "type": "apply_alignment",
+        "properties": {
+          "alignment": "center"
+        }
+      },
+      "severity": "high",
+      "enabled": true,
+      "notes": "This is the most common violation - input document has LEFT alignment"
+    },
+    
+    {
+      "rule_id": "COVER_PAGE_ROW_START",
+      "category": "cover_page",
+      "selector": "cover_page_structure",
+      "priority": 10,
+      "description": "First text row must be row 19 from top (18 blank rows before it)",
+      "location": {
+        "page": 1,
+        "row_from_top": 19,
+        "element_type": "structure"
+      },
+      "validation": {
+        "blank_rows_before": 18,
+        "first_text_row": 19
+      },
+      "correction_action": {
+        "type": "adjust_cover_page_spacing",
+        "properties": {
+          "insert_blank_rows": 18,
+          "first_content_row": 19
+        }
+      },
+      "severity": "medium",
+      "enabled": true
+    },
+    
+    {
+      "rule_id": "TABLE_ROW_HEIGHT",
+      "category": "table_structure",
+      "selector": "financial_statement_tables",
+      "priority": 11,
+      "description": "Table row height must be 0.37cm, At least",
+      "location": {
+        "element_type": "table"
+      },
+      "validation": {
+        "row_height": 0.37,
+        "row_height_unit": "cm",
+        "row_height_rule": "at_least"
+      },
+      "correction_action": {
+        "type": "apply_table_row_height",
+        "properties": {
+          "row_height": 0.37,
+          "row_height_unit": "cm",
+          "row_height_rule": "at_least"
+        }
+      },
+      "severity": "medium",
+      "enabled": true
+    },
+    
+    {
+      "rule_id": "TABLE_CELL_MARGINS",
+      "category": "table_structure",
+      "selector": "financial_statement_tables",
+      "priority": 12,
+      "description": "Cell margins: 0.05cm left/right, 0.0cm top/bottom",
+      "location": {
+        "element_type": "table_cell"
+      },
+      "validation": {
+        "left_margin": 0.05,
+        "right_margin": 0.05,
+        "top_margin": 0.0,
+        "bottom_margin": 0.0,
+        "unit": "cm"
+      },
+      "correction_action": {
+        "type": "apply_cell_margins",
+        "properties": {
+          "left_margin": 0.05,
+          "right_margin": 0.05,
+          "top_margin": 0.0,
+          "bottom_margin": 0.0,
+          "unit": "cm"
+        }
+      },
+      "severity": "low",
+      "enabled": true
+    },
+    
+    {
+      "rule_id": "TABLE_VALUE_COLUMN_WIDTH",
+      "category": "table_structure",
+      "selector": "table_value_columns",
+      "priority": 13,
+      "description": "Column width for values ($ and #) must be 2.3cm",
+      "location": {
+        "element_type": "table_column",
+        "column_type": "numeric_value"
+      },
+      "validation": {
+        "column_width": 2.3,
+        "unit": "cm"
+      },
+      "correction_action": {
+        "type": "apply_column_width",
+        "properties": {
+          "column_width": 2.3,
+          "unit": "cm"
+        }
+      },
+      "severity": "medium",
+      "enabled": true
+    },
+    
+    {
+      "rule_id": "TABLE_FSLI_HANGING_INDENT",
+      "category": "table_formatting",
+      "selector": "financial_line_items",
+      "priority": 14,
+      "description": "Wrapping FSLI description must have hanging indent of 0.63cm",
+      "location": {
+        "element_type": "table_cell",
+        "column_type": "fsli_description"
+      },
+      "validation": {
+        "hanging_indent": 0.63,
+        "unit": "cm"
+      },
+      "correction_action": {
+        "type": "apply_hanging_indent",
+        "properties": {
+          "hanging_indent": 0.63,
+          "unit": "cm"
+        }
+      },
+      "severity": "low",
+      "enabled": true,
+      "notes": "FSLI = Financial Statement Line-Item"
+    },
+    
+    {
+      "rule_id": "BALANCE_SHEET_CURRENT_PERIOD_BOLD",
+      "category": "table_formatting",
+      "selector": "balance_sheet_current_period",
+      "priority": 15,
+      "description": "Statement of Financial Position: Bold all numbers, $ sign, and date in current period columns",
+      "location": {
+        "statement_type": "Statement of Financial Position",
+        "element_type": "table_cell",
+        "column_type": "current_period"
+      },
+      "validation": {
+        "bold": true,
+        "applies_to": [
+          "numbers",
+          "currency_symbol",
+          "dates"
+        ]
+      },
+      "correction_action": {
+        "type": "apply_bold_to_current_period",
+        "properties": {
+          "bold": true,
+          "target_elements": [
+            "numbers",
+            "$",
+            "dates"
+          ]
+        }
+      },
+      "severity": "high",
+      "enabled": true,
+      "notes": "Current period typically rightmost date column in Statement of Financial Position (Balance Sheet)"
+    }
+  ],
+  
+  "categories": {
+    "cover_page": {
+      "name": "Cover Page Formatting",
+      "description": "Rules for cover page structure, fonts, alignment, and text formatting",
+      "priority": 1,
+      "critical": true
+    },
+    "table_structure": {
+      "name": "Table Structure",
+      "description": "Rules for table dimensions, row heights, column widths, and margins",
+      "priority": 2,
+      "critical": false
+    },
+    "table_formatting": {
+      "name": "Table Content Formatting",
+      "description": "Rules for table content formatting including bold, indents, and number formatting",
+      "priority": 3,
+      "critical": true
+    }
+  },
+  
+  "text_case_rules": {
+    "UPPERCASE": "All characters in uppercase",
+    "lowercase": "All characters in lowercase",
+    "Capitalize Each Word": "First letter of each word capitalized, rest lowercase",
+    "Sentence case": "First letter of first word capitalized, rest lowercase (except proper nouns)"
+  },
+  
+  "cover_page_structure": {
+    "blank_rows_before_first_text": 18,
+    "first_text_row": 19,
+    "row_sequence": [
+      {
+        "row": 19,
+        "content": "COMPANY_NAME (formerly Former_Name)",
+        "font": "Arial 14",
+        "bold": true,
+        "alignment": "center"
+      },
+      {
+        "row": 20,
+        "content": "BLANK",
+        "font": "Arial 9"
+      },
+      {
+        "row": 21,
+        "content": "Financial Statements Title",
+        "font": "Arial 9",
+        "bold": true,
+        "alignment": "center"
+      },
+      {
+        "row": 22,
+        "content": "BLANK",
+        "font": "Arial 9"
+      },
+      {
+        "row": 23,
+        "content": "Period Reference",
+        "font": "Arial 9",
+        "bold": true,
+        "alignment": "center"
+      },
+      {
+        "row": 24,
+        "content": "BLANK",
+        "font": "Arial 9"
+      },
+      {
+        "row": 25,
+        "content": "(Expression in currency)",
+        "font": "Arial 9",
+        "bold": false,
+        "alignment": "center"
+      }
+    ]
+  },
+  
+  "table_specifications": {
+    "row_height": {
+      "value": 0.37,
+      "unit": "cm",
+      "rule": "at_least"
+    },
+    "cell_margins": {
+      "left": 0.05,
+      "right": 0.05,
+      "top": 0.0,
+      "bottom": 0.0,
+      "unit": "cm"
+    },
+    "value_column_width": {
+      "value": 2.3,
+      "unit": "cm"
+    },
+    "fsli_hanging_indent": {
+      "value": 0.63,
+      "unit": "cm"
+    }
+  },
+  
+  "statement_specific_rules": {
+    "Statement of Financial Position": {
+      "alternate_names": [
+        "Balance Sheet",
+        "Statements of Financial Position"
+      ],
+      "current_period_formatting": {
+        "bold": true,
+        "applies_to": [
+          "numbers",
+          "currency_symbols",
+          "dates"
+        ]
+      }
+    }
+  },
+  
+  "metadata": {
+    "total_rules": 15,
+    "active_rules": 15,
+    "cache_ttl_seconds": 3600,
+    "author": "Ishmeet Singh Arora",
+    "organization": "Invictus - FullStack Developer Technical Work Sample",
+    "client": "BestCo Ltd.",
+    "assignment": "Assignment 3 (Bonus) - Style Guide Automation",
+    "based_on_document": "BestCo Work Sample Assignment 3",
+    "source": "Technical_Work_Sample_Supporting_Docs_Assignment_3.docx",
+    "validated_against": {
+      "input": "BestCo_Work_Sample_Assignment_3_Input.docx",
+      "output": "BestCo_Work_Sample_Assignment_3_Output.docx"
+    }
+  },
+  
+  "validation_notes": {
+    "most_common_violations": [
+      "Cover page elements LEFT-aligned instead of CENTER-aligned",
+      "Period reference not bold",
+      "Font sizes not properly set",
+      "Company name casing not following CAPS/lowercase/Capitalize rules"
+    ],
+    "critical_fixes": [
+      "Change all cover page alignment from LEFT to CENTER",
+      "Make period reference bold",
+      "Set company name to Arial 14pt",
+      "Ensure proper text casing throughout cover page"
+    ]
+  }
+}

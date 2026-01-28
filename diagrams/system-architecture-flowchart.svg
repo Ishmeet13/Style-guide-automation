@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1540">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .box { fill: #ffffff; stroke: #000000; stroke-width: 2; }
+      .line { stroke: #000000; stroke-width: 2; }
+      .dashed { stroke: #000000; stroke-width: 2; stroke-dasharray: 5,5; }
+      .arrow { fill: #000000; }
+      .text-title { fill: #000000; font-family: Arial, sans-serif; font-size: 24px; font-weight: bold; }
+      .text-bold { fill: #000000; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+      .text-normal { fill: #000000; font-family: Arial, sans-serif; font-size: 13px; }
+      .text-small { fill: #000000; font-family: Arial, sans-serif; font-size: 11px; }
+      .legend-bg { fill: #f9f9f9; stroke: #000000; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1000" height="1540" class="bg"/>
+
+  <!-- Title -->
+  <text x="500" y="40" text-anchor="middle" class="text-title">Style Guide Automation - System Architecture</text>
+  <line x1="100" y1="60" x2="900" y2="60" class="line"/>
+
+  <!-- Client -->
+  <rect x="350" y="90" width="300" height="70" rx="5" class="box"/>
+  <text x="500" y="120" text-anchor="middle" class="text-bold">CLIENT APPLICATION</text>
+  <text x="500" y="140" text-anchor="middle" class="text-small">Upload .docx documents</text>
+  <text x="500" y="155" text-anchor="middle" class="text-small">Track job progress via job_id</text>
+
+  <!-- Arrow: Client to API -->
+  <line x1="500" y1="160" x2="500" y2="200" class="line"/>
+  <polygon points="500,200 494,190 506,190" class="arrow"/>
+  <text x="520" y="185" class="text-small">HTTP POST</text>
+
+  <!-- API Gateway -->
+  <rect x="300" y="200" width="400" height="90" rx="5" class="box"/>
+  <text x="500" y="230" text-anchor="middle" class="text-bold">API GATEWAY (FastAPI)</text>
+  <text x="500" y="250" text-anchor="middle" class="text-small">• Validate file (.docx, size limit)</text>
+  <text x="500" y="265" text-anchor="middle" class="text-small">• Authenticate user (JWT)</text>
+  <text x="500" y="280" text-anchor="middle" class="text-small">• Generate and return job_id</text>
+
+  <!-- Dashed return arrow -->
+  <path d="M 300 230 L 250 230 L 250 125 L 350 125" fill="none" class="dashed"/>
+  <polygon points="350,125 340,119 340,131" class="arrow"/>
+  <text x="210" y="180" class="text-small">Returns</text>
+  <text x="210" y="195" class="text-small">job_id</text>
+
+  <!-- Split node -->
+  <circle cx="500" cy="300" r="4" class="arrow"/>
+
+  <!-- Horizontal lines from split -->
+  <line x1="500" y1="300" x2="200" y2="300" class="line"/>
+  <line x1="500" y1="300" x2="800" y2="300" class="line"/>
+
+  <!-- Down to storage -->
+  <line x1="200" y1="300" x2="200" y2="350" class="line"/>
+  <polygon points="200,350 194,340 206,340" class="arrow"/>
+  <text x="130" y="320" class="text-small">Save file</text>
+
+  <!-- Down to queue -->
+  <line x1="500" y1="300" x2="500" y2="350" class="line"/>
+  <polygon points="500,350 494,340 506,340" class="arrow"/>
+  <text x="520" y="320" class="text-small">Queue job</text>
+
+  <!-- Down to database -->
+  <line x1="800" y1="300" x2="800" y2="350" class="line"/>
+  <polygon points="800,350 794,340 806,340" class="arrow"/>
+  <text x="820" y="320" class="text-small">Save metadata</text>
+
+  <!-- Object Storage -->
+  <rect x="100" y="350" width="200" height="70" rx="5" class="box"/>
+  <text x="200" y="380" text-anchor="middle" class="text-bold">OBJECT STORAGE</text>
+  <text x="200" y="400" text-anchor="middle" class="text-small">MinIO / S3</text>
+  <text x="200" y="415" text-anchor="middle" class="text-small">Documents</text>
+
+  <!-- Job Queue -->
+  <rect x="400" y="350" width="200" height="70" rx="5" class="box"/>
+  <text x="500" y="380" text-anchor="middle" class="text-bold">JOB QUEUE</text>
+  <text x="500" y="400" text-anchor="middle" class="text-small">Celery + Redis</text>
+  <text x="500" y="415" text-anchor="middle" class="text-small">Async Processing</text>
+
+  <!-- Database -->
+  <rect x="700" y="350" width="200" height="70" rx="5" class="box"/>
+  <text x="800" y="380" text-anchor="middle" class="text-bold">DATABASE</text>
+  <text x="800" y="400" text-anchor="middle" class="text-small">PostgreSQL</text>
+  <text x="800" y="415" text-anchor="middle" class="text-small">Job Status &amp; Logs</text>
+
+  <!-- Queue to Processing -->
+  <line x1="500" y1="420" x2="500" y2="510" class="line"/>
+  <polygon points="500,510 494,500 506,500" class="arrow"/>
+  <text x="520" y="470" class="text-small">Worker picks job</text>
+
+  <!-- Processing Engine -->
+  <rect x="200" y="510" width="600" height="500" rx="5" class="box"/>
+  <text x="500" y="540" text-anchor="middle" class="text-bold">PROCESSING ENGINE (Celery Worker)</text>
+  <line x1="220" y1="555" x2="780" y2="555" class="line"/>
+
+  <!-- Step 1 -->
+  <rect x="230" y="570" width="540" height="55" rx="3" class="box"/>
+  <text x="500" y="595" text-anchor="middle" class="text-normal">STEP 1: Parse Document</text>
+  <text x="500" y="615" text-anchor="middle" class="text-small">python-docx: Extract paragraphs, tables, formatting</text>
+
+  <!-- Step 2 -->
+  <rect x="230" y="640" width="540" height="55" rx="3" class="box"/>
+  <text x="500" y="665" text-anchor="middle" class="text-normal">STEP 2: Load Rules from Rule Engine</text>
+  <text x="500" y="685" text-anchor="middle" class="text-small">Get JSON rule definitions (cached in Redis)</text>
+
+  <!-- Step 3 -->
+  <rect x="230" y="710" width="540" height="55" rx="3" class="box"/>
+  <text x="500" y="735" text-anchor="middle" class="text-normal">STEP 3: Validate Against Rules</text>
+  <text x="500" y="755" text-anchor="middle" class="text-small">Check formatting properties, find violations</text>
+
+  <!-- Step 4 -->
+  <rect x="230" y="780" width="540" height="55" rx="3" class="box"/>
+  <text x="500" y="805" text-anchor="middle" class="text-normal">STEP 4: Apply Corrections</text>
+  <text x="500" y="825" text-anchor="middle" class="text-small">Fix violations, preserve document content</text>
+
+  <!-- Step 5 -->
+  <rect x="230" y="850" width="540" height="55" rx="3" class="box"/>
+  <text x="500" y="875" text-anchor="middle" class="text-normal">STEP 5: Generate Report</text>
+  <text x="500" y="895" text-anchor="middle" class="text-small">List violations, corrections, statistics</text>
+
+  <!-- Step 6 -->
+  <rect x="230" y="920" width="540" height="55" rx="3" class="box"/>
+  <text x="500" y="945" text-anchor="middle" class="text-normal">STEP 6: Save Results</text>
+  <text x="500" y="965" text-anchor="middle" class="text-small">Store corrected file and report</text>
+
+  <!-- Rule Engine -->
+  <rect x="840" y="635" width="140" height="95" rx="5" class="box"/>
+  <text x="910" y="662" text-anchor="middle" class="text-bold">RULE ENGINE</text>
+  <text x="910" y="682" text-anchor="middle" class="text-small">JSON Rules</text>
+  <text x="910" y="700" text-anchor="middle" class="text-small">• Cover page</text>
+  <text x="910" y="716" text-anchor="middle" class="text-small">• Tables</text>
+
+  <!-- Rule Engine arrow -->
+  <line x1="840" y1="670" x2="770" y2="670" class="dashed"/>
+  <polygon points="770,670 780,664 780,676" class="arrow"/>
+  <text x="842" y="628" class="text-small">Load rules</text>
+
+  <!-- Processing to Storage -->
+  <path d="M 200 760 L 120 760 L 120 350 L 200 350" fill="none" class="line"/>
+  <polygon points="200,350 190,344 190,356" class="arrow"/>
+  <text x="88" y="600" class="text-small">Save file</text>
+
+  <!-- Processing to Database -->
+  <path d="M 800 760 L 880 760 L 880 350 L 800 350" fill="none" class="line"/>
+  <polygon points="800,350 810,344 810,356" class="arrow"/>
+  <text x="892" y="600" class="text-small">Update</text>
+
+  <!-- Complete arrow -->
+  <line x1="500" y1="1010" x2="500" y2="1050" class="line"/>
+  <polygon points="500,1050 494,1040 506,1040" class="arrow"/>
+  <text x="520" y="1035" class="text-small">Complete</text>
+
+  <!-- Results -->
+  <rect x="300" y="1050" width="400" height="90" rx="5" class="box"/>
+  <text x="500" y="1080" text-anchor="middle" class="text-bold">RESULTS AVAILABLE</text>
+  <text x="500" y="1100" text-anchor="middle" class="text-small">• Corrected .docx document</text>
+  <text x="500" y="1115" text-anchor="middle" class="text-small">• Detailed correction report (JSON)</text>
+  <text x="500" y="1130" text-anchor="middle" class="text-small">• Processing statistics</text>
+
+  <!-- Download arrow -->
+  <path d="M 700 1090 L 750 1090 L 750 125 L 650 125" fill="none" class="dashed"/>
+  <polygon points="650,125 660,119 660,131" class="arrow"/>
+  <text x="770" y="600" class="text-small">Download</text>
+
+  <!-- Legend -->
+  <rect x="50" y="1180" width="900" height="160" rx="5" class="legend-bg"/>
+  <text x="80" y="1210" class="text-bold">System Information:</text>
+  <line x1="80" y1="1220" x2="920" y2="1220" class="line"/>
+  <text x="80" y="1242" class="text-small">Technology Stack: Python 3.11 | FastAPI | Celery | Redis | PostgreSQL | python-docx | MinIO/S3</text>
+  <text x="80" y="1260" class="text-small">Deployment: Docker + Kubernetes | Horizontal scaling with multiple workers</text>
+
+  <text x="80" y="1290" class="text-bold">Flow Legend:</text>
+  <line x1="80" y1="1310" x2="140" y2="1310" class="line"/>
+  <polygon points="140,1310 130,1304 130,1316" class="arrow"/>
+  <text x="155" y="1314" class="text-small">Synchronous flow</text>
+
+  <line x1="320" y1="1310" x2="380" y2="1310" class="dashed"/>
+  <polygon points="380,1310 370,1304 370,1316" class="arrow"/>
+  <text x="395" y="1314" class="text-small">Asynchronous / Return flow</text>
+</svg>

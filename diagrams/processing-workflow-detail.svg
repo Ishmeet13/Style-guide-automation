@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1970">
+  <defs>
+    <style>
+      .box { fill: #ffffff; stroke: #000000; stroke-width: 2; }
+      .decision { fill: #f5f5f5; stroke: #000000; stroke-width: 2; }
+      .text { fill: #000000; font-family: Arial, sans-serif; font-size: 13px; }
+      .text-small { fill: #000000; font-family: Arial, sans-serif; font-size: 11px; }
+      .text-bold { fill: #000000; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+      .title { fill: #000000; font-family: Arial, sans-serif; font-size: 24px; font-weight: bold; }
+      .arrow { fill: none; stroke: #000000; stroke-width: 2; marker-end: url(#arrowhead); }
+      .dashed { fill: none; stroke: #000000; stroke-width: 2; stroke-dasharray: 5,5; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#000000" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="900" height="1970" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" class="title">Document Processing Workflow</text>
+  <text x="450" y="65" text-anchor="middle" class="text-small">Step-by-Step Execution Process</text>
+  <line x1="100" y1="80" x2="800" y2="80" stroke="#000000" stroke-width="1"/>
+
+  <!-- Step 1: Start -->
+  <rect x="250" y="110" width="400" height="70" rx="5" class="box"/>
+  <text x="450" y="140" text-anchor="middle" class="text-bold">START PROCESSING JOB</text>
+  <text x="450" y="160" text-anchor="middle" class="text-small">Celery worker picks job from queue</text>
+
+  <path d="M 450 180 L 450 210" class="arrow"/>
+
+  <!-- Step 2: Update Status -->
+  <rect x="250" y="210" width="400" height="70" rx="5" class="box"/>
+  <text x="450" y="240" text-anchor="middle" class="text-bold">UPDATE JOB STATUS</text>
+  <text x="450" y="260" text-anchor="middle" class="text-small">Set status = "processing" in database</text>
+
+  <path d="M 450 280 L 450 310" class="arrow"/>
+
+  <!-- Step 3: Load Document -->
+  <rect x="250" y="310" width="400" height="70" rx="5" class="box"/>
+  <text x="450" y="340" text-anchor="middle" class="text-bold">LOAD ORIGINAL DOCUMENT</text>
+  <text x="450" y="360" text-anchor="middle" class="text-small">Retrieve .docx file from storage (S3/MinIO)</text>
+
+  <path d="M 450 380 L 450 420" class="arrow"/>
+
+  <!-- Decision 1: Valid File? -->
+  <polygon points="450,420 580,460 450,500 320,460" class="decision"/>
+  <text x="450" y="465" text-anchor="middle" class="text-bold">Valid .docx?</text>
+
+  <!-- Error path -->
+  <path d="M 580 460 L 700 460 L 700 1790 L 450 1790 L 450 1820" class="dashed"/>
+  <text x="720" y="465" class="text-small">NO → Error</text>
+
+  <!-- Success path -->
+  <path d="M 450 500 L 450 540" class="arrow"/>
+  <text x="470" y="525" class="text-small">YES</text>
+
+  <!-- Step 4: Parse -->
+  <rect x="250" y="540" width="400" height="90" rx="5" class="box"/>
+  <text x="450" y="570" text-anchor="middle" class="text-bold">PARSE DOCUMENT STRUCTURE</text>
+  <text x="450" y="590" text-anchor="middle" class="text-small">Library: python-docx v1.1.0</text>
+  <text x="450" y="605" text-anchor="middle" class="text-small">Extract paragraphs, tables, formatting</text>
+
+  <path d="M 450 620 L 450 660" class="arrow"/>
+
+  <!-- Step 5: Load Rules -->
+  <rect x="250" y="670" width="400" height="90" rx="5" class="box"/>
+  <text x="450" y="700" text-anchor="middle" class="text-bold">LOAD VALIDATION RULES</text>
+  <text x="450" y="720" text-anchor="middle" class="text-small">Get JSON rules from Rule Engine</text>
+  <text x="450" y="735" text-anchor="middle" class="text-small">Cached in Redis for performance</text>
+
+  <path d="M 450 750 L 450 790" class="arrow"/>
+
+  <!-- Step 6: Initialize -->
+  <rect x="250" y="790" width="400" height="70" rx="5" class="box"/>
+  <text x="450" y="820" text-anchor="middle" class="text-bold">INITIALIZE VALIDATOR</text>
+  <text x="450" y="840" text-anchor="middle" class="text-small">Create violations list and element index</text>
+
+  <path d="M 450 860 L 450 900" class="arrow"/>
+
+  <!-- Step 7: Validate Loop -->
+  <rect x="250" y="900" width="400" height="110" rx="5" class="box"/>
+  <text x="450" y="930" text-anchor="middle" class="text-bold">VALIDATE DOCUMENT</text>
+  <text x="450" y="950" text-anchor="middle" class="text-small">For each rule:</text>
+  <text x="260" y="970" class="text-small">  1. Match elements using selector</text>
+  <text x="260" y="985" class="text-small">  2. Check properties (font, size, alignment, etc.)</text>
+  <text x="260" y="1000" class="text-small">  3. Record violations if mismatch found</text>
+
+  <path d="M 450 1010 L 450 1060" class="arrow"/>
+
+  <!-- Decision 2: Violations Found? -->
+  <polygon points="450,1060 580,1100 450,1140 320,1100" class="decision"/>
+  <text x="450" y="1105" text-anchor="middle" class="text-bold">Violations found?</text>
+
+  <!-- No violations -->
+  <path d="M 320 1100 L 200 1100 L 200 1260 L 320 1260" class="arrow"/>
+  <text x="180" y="1105" class="text-small">NO</text>
+
+  <!-- Yes violations -->
+  <path d="M 450 1140 L 450 1180" class="arrow"/>
+  <text x="470" y="1165" class="text-small">YES</text>
+
+  <!-- Step 8: Apply Corrections -->
+  <rect x="250" y="1180" width="400" height="110" rx="5" class="box"/>
+  <text x="450" y="1210" text-anchor="middle" class="text-bold">APPLY CORRECTIONS</text>
+  <text x="450" y="1230" text-anchor="middle" class="text-small">For each violation:</text>
+  <text x="260" y="1250" class="text-small">  1. Get correction action from rule</text>
+  <text x="260" y="1265" class="text-small">  2. Apply fix (set font, alignment, spacing, etc.)</text>
+  <text x="260" y="1280" class="text-small">  3. Track success/failure</text>
+
+  <path d="M 450 1290 L 450 1330" class="arrow"/>
+
+  <!-- Step 9: Generate Report -->
+  <rect x="250" y="1330" width="400" height="80" rx="5" class="box"/>
+  <text x="450" y="1360" text-anchor="middle" class="text-bold">GENERATE REPORT</text>
+  <text x="450" y="1380" text-anchor="middle" class="text-small">List violations, corrections, statistics</text>
+  <text x="450" y="1395" text-anchor="middle" class="text-small">Format: JSON + human-readable summary</text>
+
+  <path d="M 450 1410 L 450 1450" class="arrow"/>
+
+  <!-- Step 10: Save Results -->
+  <rect x="250" y="1450" width="400" height="90" rx="5" class="box"/>
+  <text x="450" y="1480" text-anchor="middle" class="text-bold">SAVE RESULTS</text>
+  <text x="450" y="1500" text-anchor="middle" class="text-small">1. Save corrected .docx to storage</text>
+  <text x="450" y="1515" text-anchor="middle" class="text-small">2. Save report to database</text>
+  <text x="450" y="1530" text-anchor="middle" class="text-small">3. Update job metadata</text>
+
+  <path d="M 450 1540 L 450 1580" class="arrow"/>
+
+  <!-- Step 11: Update Status Success -->
+  <rect x="250" y="1580" width="400" height="70" rx="5" class="box"/>
+  <text x="450" y="1610" text-anchor="middle" class="text-bold">UPDATE STATUS → COMPLETED</text>
+  <text x="450" y="1630" text-anchor="middle" class="text-small">Job successful, results available</text>
+
+  <path d="M 450 1650 L 450 1690" class="arrow"/>
+
+  <!-- Decision 3: Webhook? -->
+  <polygon points="450,1690 580,1730 450,1770 320,1730" class="decision"/>
+  <text x="450" y="1735" text-anchor="middle" class="text-bold">Webhook?</text>
+
+  <!-- No webhook -->
+  <path d="M 320 1730 L 250 1730 L 250 1840 L 320 1840" class="arrow"/>
+  <text x="230" y="1735" class="text-small">NO</text>
+
+  <!-- Yes webhook -->
+  <path d="M 580 1730 L 650 1730 L 650 1840 L 580 1840" class="arrow"/>
+  <text x="670" y="1735" class="text-small">YES</text>
+  <rect x="600" y="1755" width="100" height="40" rx="3" class="box"/>
+  <text x="650" y="1780" text-anchor="middle" class="text-small">Send</text>
+  <text x="650" y="1793" text-anchor="middle" class="text-small">notification</text>
+
+  <!-- End -->
+  <rect x="250" y="1840" width="400" height="60" rx="5" class="box"/>
+  <text x="450" y="1875" text-anchor="middle" class="text-bold">JOB COMPLETE</text>
+
+  <!-- Error Handler (right side) -->
+  <rect x="710" y="530" width="170" height="180" rx="5" fill="#f5f5f5" stroke="#000000" stroke-width="2"/>
+  <text x="795" y="560" text-anchor="middle" class="text-bold">ERROR HANDLER</text>
+  <line x1="720" y1="573" x2="870" y2="573" stroke="#000000" stroke-width="1"/>
+  <text x="795" y="595" text-anchor="middle" class="text-small">If any step fails:</text>
+  <text x="720" y="615" class="text-small">1. Log error details</text>
+  <text x="720" y="635" class="text-small">2. Set status = "failed"</text>
+  <text x="720" y="655" class="text-small">3. Save error message</text>
+  <text x="720" y="675" class="text-small">4. Retry (max 3 times)</text>
+  <text x="720" y="695" class="text-small">5. Use exponential backoff</text>
+
+  <!-- Key Features (left side) -->
+  <rect x="20" y="530" width="180" height="200" rx="5" fill="#f5f5f5" stroke="#000000" stroke-width="2"/>
+  <text x="110" y="560" text-anchor="middle" class="text-bold">KEY FEATURES</text>
+  <line x1="30" y1="573" x2="190" y2="573" stroke="#000000" stroke-width="1"/>
+  <text x="30" y="595" class="text-small">• Non-blocking API</text>
+  <text x="30" y="615" class="text-small">• Job queuing</text>
+  <text x="30" y="635" class="text-small">• Preserves original</text>
+  <text x="30" y="655" class="text-small">• Error handling</text>
+  <text x="30" y="675" class="text-small">• Retry mechanism</text>
+  <text x="30" y="695" class="text-small">• JSON-based rules</text>
+  <text x="30" y="715" class="text-small">• Horizontal scaling</text>
+
+</svg>
