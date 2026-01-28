@@ -45,10 +45,10 @@ I've organized everything into four main documents:
 
 ### Documentation
 
-**[RESEARCH_DOCUMENT.md](./docs/RESEARCH_DOCUMENT.md)** (about 30 pages)
+**[RESEARCH_DOCUMENT.md](./docs/RESEARCH_DOCUMENT.md)**
 This is where I compared different technologies for working with Word documents. I looked at python-docx, Microsoft's Open XML SDK, some commercial options like Aspose, and a bunch of other libraries. For each one, I documented the pros and cons, checked out their performance characteristics, and dug through documentation and Stack Overflow to see what people's real experiences were. I've included links to about 30 different sources - official docs, tutorials, blog posts, and discussions.
 
-**[SYSTEM_DESIGN.md](./docs/SYSTEM_DESIGN.md)** (about 30 pages)
+**[SYSTEM_DESIGN.md](./docs/SYSTEM_DESIGN.md)**
 Here's where I mapped out how the system would actually work. I started with the high-level architecture, then broke it down into specific components like the rule engine, validation logic, and correction workflow. I've included detailed diagrams:
 
 - **[System Architecture](./diagrams/Final_Style_guide.png)** - Complete system overview with all components
@@ -59,10 +59,10 @@ Here's where I mapped out how the system would actually work. I started with the
 
 I've also included some pseudocode for the main algorithms and tried to explain the key design decisions - like why I chose a rules-based approach instead of hardcoding everything, and why async processing makes more sense than synchronous.
 
-**[EXECUTIVE_SUMMARY.md](./docs/EXECUTIVE_SUMMARY.md)** (about 20 pages)
+**[EXECUTIVE_SUMMARY.md](./docs/EXECUTIVE_SUMMARY.md)**
 This one's more business-focused. I worked out the ROI calculations, compared manual vs automated costs, and put together a realistic implementation timeline. The numbers are pretty compelling - we're looking at about $174K in annual savings with a 2-month break-even period.
 
-**[QUICK_START.md](./docs/QUICK_START.md)** (about 10 pages)
+**[QUICK_START.md](./docs/QUICK_START.md)**
 I included this to show what the actual implementation would look like. There's a basic example you could run in 5 minutes, plus a more complete setup guide. I added some troubleshooting tips based on issues I've run into when working with docx files in the past.
 
 ### Source Code
