@@ -25,11 +25,14 @@ assignment3/
 │   ├── RESEARCH_DOCUMENT.md
 │   └── QUICK_START.md
 ├── examples/
-│   └── example_usage.py
+│   ├── BestCo Work Sample Assignment 3 Input.docx   
+│   ├── BestCo Work Sample Assignment 3 Output.docx  
+│   └── bestco-rules.json                            
 ├── src/
 │   ├── rule_engine.py
 │   ├── validator.py
 │   ├── corrector.py
+│   ├── example_usage.py
 │   └── main.py
 └── README.md
 ```
@@ -75,7 +78,7 @@ The `src/` directory contains working Python code demonstrating the core concept
 
 ### Examples
 
-The `examples/` directory contains usage demonstrations showing how to use the system for various scenarios.
+The `examples/` directory contains rules.json, input document and output document.
 
 ---
 
@@ -224,5 +227,3 @@ The documents I've put together should give you a good sense of how I approach p
 Looking forward to discussing this in more detail.
 
 ---
-
-*BestCo Technical Work Sample | Assignment 3 | Ishmeet Singh Arora | January 2025*
