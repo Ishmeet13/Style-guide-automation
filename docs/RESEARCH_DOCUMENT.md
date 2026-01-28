@@ -6,7 +6,7 @@
 
 ## Introduction
 
-When I started looking into this problem, I knew there were several ways to work with Word documents programmatically. I've used python-docx before on smaller projects, but I wanted to make sure I wasn't missing something better. So I spent about a week diving deep into the alternatives - testing libraries, reading documentation, going through Stack Overflow discussions to see what issues people actually run into.
+When I started looking into this problem, I knew there were several ways to work with Word documents programmatically. I've used python-docx before on smaller projects, but I wanted to make sure I wasn't missing something better. So I spent about a day diving deep into the alternatives - testing libraries, reading documentation, going through Stack Overflow discussions to see what issues people actually run into.
 
 This document captures what I learned. I'll walk through each technology I evaluated, explain what's good and bad about it, and show why I ended up recommending what I did.
 
