@@ -617,5 +617,3 @@ For easy reference, here are all the diagrams included in this document:
 | Figure 5 | processing-workflow-detail.svg | Detection & correction workflow |
 
 ---
-
-*BestCo Technical Work Sample | Assignment 3 | Ishmeet Singh Arora | January 2025*
