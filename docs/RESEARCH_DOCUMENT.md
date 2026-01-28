@@ -400,13 +400,6 @@ And it actually does everything we need. The style guide rules are all things py
 
 So that's my recommendation. Use python-docx, wrap it in a FastAPI service, queue jobs with Celery, and you have a solid solution that will work reliably and be easy to maintain.
 
----
-
-Ishmeet Singh Arora  
-January 26, 2026
-
----
-
 ## Appendix: Quick Reference
 
 **python-docx key capabilities:**
