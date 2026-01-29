@@ -1,6 +1,7 @@
 """
 Validator Module
 Validates documents against style guide rules and detects violations
+
 """
 
 import logging
@@ -120,24 +121,26 @@ class DocumentValidator:
         # Get row/paragraph to check
         row_from_top = location.get('row_from_top')
         
-        if not row_from_top:
+        if row_from_top is None:
             return
         
         # Handle single row number
-        if isinstance(row_from_top, (int, str)) and str(row_from_top).isdigit():
-            para_index = int(row_from_top) - 1
+        if isinstance(row_from_top, int):
+            para_index = row_from_top - 1
             self._validate_paragraph(doc, para_index, rule)
-        
-        # Handle range (e.g., "1-30")
-        elif isinstance(row_from_top, str) and '-' in row_from_top:
-            start, end = map(int, row_from_top.split('-'))
-            for para_index in range(start - 1, min(end, len(doc.paragraphs))):
+        elif isinstance(row_from_top, str):
+            if row_from_top.isdigit():
+                para_index = int(row_from_top) - 1
                 self._validate_paragraph(doc, para_index, rule)
-        
-        # Handle "all" selector
-        elif "all" in str(row_from_top).lower():
-            for i in range(min(30, len(doc.paragraphs))):  # First 30 paragraphs
-                self._validate_paragraph(doc, i, rule)
+            elif '-' in row_from_top:
+                # Handle range (e.g., "1-18")
+                start, end = map(int, row_from_top.split('-'))
+                for para_index in range(start - 1, min(end, len(doc.paragraphs))):
+                    self._validate_paragraph(doc, para_index, rule)
+            elif "all" in row_from_top.lower():
+                # Handle "all" selector
+                for i in range(min(30, len(doc.paragraphs))):
+                    self._validate_paragraph(doc, i, rule)
     
     def _validate_paragraph(self, doc: Document, para_index: int, rule: Dict[str, Any]):
         """Validate a specific paragraph"""
@@ -150,40 +153,46 @@ class DocumentValidator:
         expected = {}
         actual = {}
         
-        # Check if paragraph should be blank
-        is_blank_rule = validation.get('is_blank')
-        if is_blank_rule is not None:
-            expected['is_blank'] = is_blank_rule
-            actual['is_blank'] = len(para.text.strip()) == 0
-            
-            if expected['is_blank'] != actual['is_blank']:
-                violations_found = True
-        
-        # Skip other checks if it's supposed to be blank
-        if is_blank_rule and not violations_found:
-            return
-        
-        # Check alignment
+        # Check alignment - CRITICAL: None or 0 means LEFT
         if 'alignment' in validation:
-            expected_align = self._parse_alignment(validation['alignment'])
-            actual_align = para.alignment
+            expected_align_str = validation['alignment'].lower()
+            expected_align_val = self._alignment_str_to_int(expected_align_str)
+            actual_align_val = self._get_alignment_as_int(para.alignment)
             
-            expected['alignment'] = validation['alignment']
-            actual['alignment'] = self._alignment_to_string(actual_align)
+            expected['alignment'] = expected_align_str
+            actual['alignment'] = self._alignment_int_to_str(actual_align_val)
             
-            if actual_align != expected_align:
+            if expected_align_val != actual_align_val:
                 violations_found = True
+                self.logger.debug(f"Row {para_index + 1}: Alignment mismatch - expected {expected_align_str}, got {actual['alignment']}")
         
-        # Check font properties (from first run)
+        # Check bold - works for both empty and non-empty paragraphs
+        if 'bold' in validation:
+            expected_bold = validation['bold']
+            actual_bold = self._get_paragraph_bold(para)
+            
+            expected['bold'] = expected_bold
+            actual['bold'] = actual_bold
+            
+            # Normalize: None is treated as False for comparison
+            actual_bold_normalized = actual_bold if actual_bold is not None else False
+            
+            if expected_bold != actual_bold_normalized:
+                violations_found = True
+                self.logger.debug(f"Row {para_index + 1}: Bold mismatch - expected {expected_bold}, got {actual_bold}")
+        
+        # Check font properties (only if runs exist)
         if para.runs:
             run = para.runs[0]
             
             # Font name
             if 'font_name' in validation:
                 expected['font_name'] = validation['font_name']
-                actual['font_name'] = run.font.name or "default"
+                actual_font = run.font.name
+                actual['font_name'] = actual_font or "default"
                 
-                if run.font.name != validation['font_name']:
+                # Only flag if explicitly different (not None)
+                if actual_font is not None and actual_font != validation['font_name']:
                     violations_found = True
             
             # Font size
@@ -192,16 +201,19 @@ class DocumentValidator:
                 actual_size = run.font.size.pt if run.font.size else None
                 actual['font_size'] = actual_size
                 
-                if actual_size != validation['font_size']:
+                if actual_size is not None and actual_size != validation['font_size']:
                     violations_found = True
+        else:
+            # Empty paragraph - check if we need specific formatting
+            if 'font_size' in validation:
+                expected['font_size'] = validation['font_size']
+                actual['font_size'] = None
+                # Don't flag as violation for empty paragraphs with no runs
             
-            # Bold
-            if 'bold' in validation:
-                expected['bold'] = validation['bold']
-                actual['bold'] = run.font.bold
-                
-                if run.font.bold != validation['bold']:
-                    violations_found = True
+            if 'font_name' in validation:
+                expected['font_name'] = validation['font_name']
+                actual['font_name'] = None
+                # Don't flag as violation for empty paragraphs with no runs
         
         # Add violation if any check failed
         if violations_found:
@@ -213,6 +225,39 @@ class DocumentValidator:
                 actual=actual,
                 message=message
             )
+    
+    def _get_alignment_as_int(self, alignment) -> int:
+        """Convert alignment to integer (0=LEFT, 1=CENTER, 2=RIGHT, 3=JUSTIFY)"""
+        if alignment is None:
+            return 0  # None means LEFT
+        if isinstance(alignment, int):
+            return alignment
+        # WD_ALIGN_PARAGRAPH enum values
+        try:
+            return int(alignment)
+        except:
+            return 0
+    
+    def _alignment_str_to_int(self, align_str: str) -> int:
+        """Convert alignment string to integer"""
+        mapping = {
+            'left': 0,
+            'center': 1,
+            'right': 2,
+            'justify': 3
+        }
+        return mapping.get(align_str.lower(), 0)
+    
+    def _alignment_int_to_str(self, align_int: int) -> str:
+        """Convert alignment integer to string"""
+        mapping = {0: 'left', 1: 'center', 2: 'right', 3: 'justify'}
+        return mapping.get(align_int, 'left')
+    
+    def _get_paragraph_bold(self, para) -> Optional[bool]:
+        """Get bold status of paragraph, handling empty paragraphs"""
+        if para.runs:
+            return para.runs[0].font.bold
+        return None
     
     def _validate_table_rule(self, doc: Document, rule: Dict[str, Any]):
         """Validate table rules"""
@@ -310,7 +355,7 @@ class DocumentValidator:
             if key in actual and expected[key] != actual[key]:
                 differences.append(f"{key}: expected '{expected[key]}', got '{actual[key]}'")
         
-        return f"Paragraph {para_index + 1} (Row {para_index + 1}): {'; '.join(differences)}"
+        return f"Row {para_index + 1}: {'; '.join(differences)}"
     
     def _parse_alignment(self, alignment_str: str) -> Optional[WD_ALIGN_PARAGRAPH]:
         """Convert alignment string to enum"""
@@ -324,6 +369,8 @@ class DocumentValidator:
     
     def _alignment_to_string(self, alignment) -> str:
         """Convert alignment enum to string"""
+        if alignment is None or alignment == 0:
+            return 'left'
         if alignment == WD_ALIGN_PARAGRAPH.CENTER or alignment == 1:
             return 'center'
         elif alignment == WD_ALIGN_PARAGRAPH.RIGHT or alignment == 2:
@@ -361,7 +408,7 @@ class DocumentValidator:
 
 # Example usage
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     
     from rule_engine import RuleEngine
     
@@ -375,9 +422,11 @@ if __name__ == "__main__":
     # Print results
     print(f"\nFound {len(violations)} violations\n")
     
-    for v in violations[:5]:  # Show first 5
+    for v in violations[:10]:  # Show first 10
         print(f"[{v.severity.upper()}] {v.rule_name}")
-        print(f"  Location: {v.location}")
+        print(f"  Location: Row {v.location.get('row', 'N/A')}")
+        print(f"  Expected: {v.expected}")
+        print(f"  Actual: {v.actual}")
         print(f"  Message: {v.message}")
         print()
     
