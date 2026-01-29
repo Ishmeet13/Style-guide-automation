@@ -209,7 +209,7 @@ To run the basic example:
 pip install python-docx
 
 # Run validation
-python src/main.py "examples/BestCo Work Sample Assignment 3 Input.docx" --rules examples/bestco-rules.json --output corrected.docx
+python src/main.py "examples/BestCo Work Sample Assignment 3 Input.docx" --output "examples/corrected_output.docx" --complete
 ```
 
 For detailed setup instructions, see [QUICK_START.md](./docs/QUICK_START.md).
